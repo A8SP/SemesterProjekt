@@ -1,4 +1,4 @@
-QT += quick
+QT += quick qml 3dcore 3drender 3dinput 3dlogic 3dextras 3danimation
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
