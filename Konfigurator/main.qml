@@ -16,109 +16,32 @@ ApplicationWindow{
     visible: true
     width: 640
     height: 480
-    title: qsTr("3D")
+    color: "#c7c7c8"
+    title: qsTr("Konfigurator")
     property bool loaderSlot1: false;
     property bool loaderSlot2: false;
     property bool loaderSlot3: false;
 
-    header: ToolBar{
 
-        RowLayout{
-            anchors.fill: parent
-            ToolButton{
-                text: "Slot 1"
-                onPressed:{
-                    loaderSlot1 = !loaderSlot1;
-                    if(loaderSlot1){
-                        //sceneLoaderSlot1.source = "file:c:/.."
-                        fileDialog0.open();
-                    }
-                }
-            }
-            ToolButton{
-                text: "Slot 2"
-                onPressed:{
-                    loaderSlot2 = !loaderSlot2;
-                    if(loaderSlot2){
+//    FileDialog{
+//        id: fileDialog0
+//        onAccepted:{
+//            sceneLoaderSlot1.source = fileDialog0.fileUrl
+//        }
+//    }
+//    FileDialog{
+//        id: fileDialog1
+//        onAccepted:{
+//            sceneLoaderSlot2.source = fileDialog1.fileUrl
+//        }
+//    }
+//    FileDialog{
+//        id: fileDialog2
+//        onAccepted:{
+//            sceneLoaderSlot3.source = fileDialog2.fileUrl
+//        }
+//    }
 
-                        fileDialog1.open();
-                    }
-                }
-            }
-            ToolButton{
-                text: "Slot 3"
-                onPressed:{
-                    loaderSlot3 = !loaderSlot3;
-                    if(loaderSlot3){
-                        fileDialog2.open();
-                    }
-                }
-            }
-        }
-    }
-
-    FileDialog{
-        id: fileDialog0
-        onAccepted:{
-            sceneLoaderSlot1.source = fileDialog0.fileUrl
-        }
-    }
-    FileDialog{
-        id: fileDialog1
-        onAccepted:{
-            sceneLoaderSlot2.source = fileDialog1.fileUrl
-        }
-    }
-    FileDialog{
-        id: fileDialog2
-        onAccepted:{
-            sceneLoaderSlot3.source = fileDialog2.fileUrl
-        }
-    }
-
-    ListModel{
-        id: myModel
-             ListElement {
-                 type: "Car 1"
-                 description: "Auto mit der Modellnummer 110"
-                 imagePath: "file:c:/.."
-             }
-             ListElement {
-                 type: "Car 2"
-                 description: "Auto mit der Modellnummer 111"
-                 imagePath: "file:c:/.."
-             }
-    }
-
-
-    ListView {
-        id: listView
-        width: 100
-        height: parent.height
-
-        model: myModel
-
-        delegate: ItemDelegate {
-             Text{
-                 id: myText
-                 y: 20; anchors.horizontalCenter: parent.horizontalCenter
-                 text: type
-             }
-
-
-            Image{
-                id: myIcon
-                anchors { top: myText.bottom }
-                width: 80
-                height: 80
-                source: imagePath
-            }
-            height: 110
-            onClicked: console.log("clicked:", modelData)
-        }
-
-        ScrollIndicator.vertical: ScrollIndicator { }
-    }
 
     Scene3D {
         anchors.rightMargin: 0
@@ -156,17 +79,11 @@ ApplicationWindow{
             components: [
                 RenderSettings{
                     activeFrameGraph: ForwardRenderer{
-                        clearColor: "transparent"
+                        clearColor: "transparent";
                         camera: camera
                     }
-                },
-
-                InputSettings{
-                    MouseArea {
-                        width: 200; height: 200
-                        onClicked: console.log("hello")
-                    }
                 }
+
             ]
 
             Entity{
@@ -191,15 +108,12 @@ ApplicationWindow{
                     },
                     Material{
                         parameters: [
-                         Parameter { name: "diffuseColor"; value: "blue" }]
+                         Parameter { name: "color"; value: "blue" }]
                     } ,
 
                     SceneLoader{
-                        id: sceneLoaderTisch
-                        source: "file:c:/.." // hier url zu BASIS_TABLE.*
-                        onStatusChanged: {
-                            console.log("sceneLoaderTisch status: " + status);
-                        }
+                       id: sceneLoaderTisch
+                       source:  "file:///"+applicationDirPath+"/../../smallFLEX/BASIS_TABLE.STL"
                     }
 
                 ]
@@ -270,6 +184,50 @@ ApplicationWindow{
             }
 
         }
+    }
+
+    Pane {
+        id: nav
+        x: 0
+        y: 0
+        width: 108
+        height: 480
+        opacity: 0.5
+        clip: false
+        hoverEnabled: false
+
+        Image {
+            id:basis
+            x: -12
+            y: 0
+            width: 108
+            height: 87
+            source: "file:///"+applicationDirPath+"/../../smallFLEX/BASISSTATION.png"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    loaderSlot1.source = "file:///"+applicationDirPath+"/../../smallFLEX/BASISSTATION.STL"
+                }
+            }
+        }
+
+        Image {
+            id:conveyor
+            x: -12
+            y: 90
+            width: 108
+            height: 87
+            source: "file:///"+applicationDirPath+"/../../smallFLEX/CONVEYOR.png"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    loaderSlot1.source = "file:///"+applicationDirPath+"/../../smallFLEX/CONVEYOR.STL"
+                }
+            }
+        }
+
     }
 
 }
